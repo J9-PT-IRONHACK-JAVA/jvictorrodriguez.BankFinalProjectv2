@@ -1,5 +1,6 @@
 package com.ironhack.bankproject.user.model;
 
+import com.ironhack.bankproject.user.dto.AdminDTO;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -22,5 +23,15 @@ public class Admin extends User{
         super(username, password, roles);
         this.email = email;
         this.name = name;
+    }
+    public static Admin fromDTO(AdminDTO adminDTO){
+        var admin=new Admin();
+        admin.setUsername(adminDTO.getUsername());
+        admin.setPassword(adminDTO.getPassword());
+        admin.setEmail(adminDTO.getEmail());
+        admin.setName(adminDTO.getName());
+        admin.setId(adminDTO.getId());
+        admin.setRoles(adminDTO.getRoles());
+        return admin;
     }
 }
