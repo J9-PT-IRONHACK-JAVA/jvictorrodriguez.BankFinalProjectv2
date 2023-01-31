@@ -1,4 +1,4 @@
-package com.ironhack.bankproject.User.model;
+package com.ironhack.bankproject.user.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -10,10 +10,13 @@ import java.time.Instant;
 @Data
 @Entity
 @Table(name = "users")
-public class user {
+public class User {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column (unique = true)
     private String username;
+
     private String password;
     private String roles;
     private boolean isAccountNonExpired;
@@ -25,4 +28,20 @@ public class user {
     @UpdateTimestamp
     private Instant updateDate;
 
+    public User(String username, String password, String roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.isAccountNonExpired=true;
+        this.isAccountNonLocked=true;
+        this.isCredentialNonExpired=true;
+        this.isEnabled=true;
+    }
+
+    public User() {
+        this.isAccountNonExpired=true;
+        this.isAccountNonLocked=true;
+        this.isCredentialNonExpired=true;
+        this.isEnabled=true;
+    }
 }
