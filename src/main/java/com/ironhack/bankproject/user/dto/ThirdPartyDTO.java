@@ -17,6 +17,7 @@ public class ThirdPartyDTO {
     private String roles;
     private String name;
     private String hashedKey;
+    private Long id;
 
     public ThirdPartyDTO() {
         this.roles="ROLE_THIRDPARTY";
@@ -35,6 +36,7 @@ public class ThirdPartyDTO {
         thirdPartyDTO.setPassword(thirdParty.getPassword());
         thirdPartyDTO.setName(thirdParty.getName());
         thirdPartyDTO.setHashedKey(thirdParty.getHashedKey());
+        thirdPartyDTO.setId(thirdParty.getId());
         return thirdPartyDTO;
     }
 }

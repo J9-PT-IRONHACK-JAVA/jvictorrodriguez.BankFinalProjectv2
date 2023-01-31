@@ -50,6 +50,12 @@ public class ThirdPartyService {
             thirdPartyToUpdate.setPassword(thirdPartyDTO.getPassword());}
         return ThirdPartyDTO.fromThirdParty(thirdPartyToUpdate);
     }
+
+
+    public void delete(ThirdPartyDTO thirdPartyDTO) {
+        thirdPartyRepository.deleteById(thirdPartyDTO.getId());
+    }
+
     private ThirdParty findByUserName(String username) {
         return thirdPartyRepository.findByUsername(username).orElseThrow(()-> new UserNotFoundException(username));
     }

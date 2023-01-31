@@ -26,6 +26,7 @@ public class ThirdParty extends User{
         thirdParty.setPassword(thirdPartyDTO.getPassword());
         thirdParty.setName(thirdPartyDTO.getName());
         thirdParty.setHashedKey(thirdPartyDTO.getHashedKey());
+        thirdParty.setId(thirdParty.getId());
         return thirdParty;
     }
 }
