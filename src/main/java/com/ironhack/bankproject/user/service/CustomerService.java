@@ -47,13 +47,13 @@ public class CustomerService {
         if(!customerDTO.getRoles().isEmpty()){
             customerToUpdate.setRoles(customerDTO.getRoles());
         }
-        if (!customerToUpdate.getEmail().isEmpty()){
+        if (!customerDTO.getEmail().isEmpty()){
             customerToUpdate.setEmail(customerDTO.getEmail());
         }
-        if(!customerToUpdate.getName().isEmpty()){
+        if(!customerDTO.getName().isEmpty()){
             customerToUpdate.setName(customerDTO.getName());
         }
-        if(!customerToUpdate.getPassword().isEmpty()){
+        if(!customerDTO.getPassword().isEmpty()){
             customerToUpdate.setPassword(customerDTO.getPassword());}
         return CustomerDTO.fromCustomer(customerToUpdate);
     }

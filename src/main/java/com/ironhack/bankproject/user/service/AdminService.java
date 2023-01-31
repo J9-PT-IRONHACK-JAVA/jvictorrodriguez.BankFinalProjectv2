@@ -42,13 +42,13 @@ public class AdminService {
         if(!adminDTO.getRoles().isEmpty()){
             adminToUpdate.setRoles(adminDTO.getRoles());
         }
-        if (!adminToUpdate.getEmail().isEmpty()){
+        if (!adminDTO.getEmail().isEmpty()){
             adminToUpdate.setEmail(adminDTO.getEmail());
         }
-        if(!adminToUpdate.getName().isEmpty()){
+        if(!adminDTO.getName().isEmpty()){
             adminToUpdate.setName(adminDTO.getName());
         }
-        if(!adminToUpdate.getPassword().isEmpty()){
+        if(!adminDTO.getPassword().isEmpty()){
             adminToUpdate.setPassword(adminDTO.getPassword());}
         return AdminDTO.fromAdmin(adminToUpdate);
     }

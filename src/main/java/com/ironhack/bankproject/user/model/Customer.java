@@ -1,6 +1,7 @@
 package com.ironhack.bankproject.user.model;
 
 import com.ironhack.bankproject.user.dto.CustomerDTO;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 
 public class Customer extends User{
     @Size(min = 6,max=9,message = "Dni should have between 6 and 9 characters")
+    @Column (unique = true)
     private String dni;
     @Email(message = "Email should be valid")
     private String email;

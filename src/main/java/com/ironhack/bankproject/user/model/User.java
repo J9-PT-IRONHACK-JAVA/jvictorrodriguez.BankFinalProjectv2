@@ -10,7 +10,7 @@ import java.time.Instant;
 @Data
 @Entity
 @Table(name = "users")
-public class User {
+public abstract class  User {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,3 +45,4 @@ public class User {
         this.isEnabled=true;
     }
 }
+//todo java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '12345i' for key 'users.UK_r43af9ap4edm43mmtq01oddj6'
