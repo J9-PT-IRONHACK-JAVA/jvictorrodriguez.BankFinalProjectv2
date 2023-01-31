@@ -21,6 +21,7 @@ public class AdminController {
     public List<Admin> findAll(){
         return adminService.findAll();
     }
+
     @PostMapping("Create")
     @ResponseStatus(HttpStatus.CREATED)
     public AdminDTO create(@RequestBody @Valid AdminDTO adminDTO){
