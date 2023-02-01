@@ -1,57 +1,62 @@
 package com.ironhack.bankproject.account.service;
 
-import com.ironhack.bankproject.Money;
 import com.ironhack.bankproject.account.dto.AccountDTO;
-import com.ironhack.bankproject.account.enums.AccountType;
-import com.ironhack.bankproject.account.model.Account;
-import com.ironhack.bankproject.account.model.CheckingAccount;
-import com.ironhack.bankproject.account.model.StudentAccount;
+import com.ironhack.bankproject.account.exceptions.AccountTypeNotFoundException;
+import com.ironhack.bankproject.account.model.*;
 import com.ironhack.bankproject.account.repository.AccountRepository;
-import com.ironhack.bankproject.user.dto.AdminDTO;
-import com.ironhack.bankproject.user.model.Admin;
+import com.ironhack.bankproject.user.dto.CustomerDTO;
+import com.ironhack.bankproject.user.exception.UserNotFoundException;
+import com.ironhack.bankproject.user.model.Customer;
+import com.ironhack.bankproject.user.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.List;
 
-import static com.ironhack.bankproject.account.enums.AccountType.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AccountService {
     private final AccountRepository accountRepository;
+    private final CustomerRepository customerRepository;
 
     public List<Account> findAll() {
         return accountRepository.findAll();
     }
 
 
-    public AccountDTO create(AccountDTO accountDTO) {
-        switch (accountDTO.getAccountType()) {
-            case CHECKING_ACCOUNT ->  {
-                        accountRepository.save(new CheckingAccount());
-                }
-                case STUDENT_ACCOUNT -> {
-                    accountRepository.save(new StudentAccount());
-                }
-//                case SAVINGS_ACCOUNT -> {
-//                    accountRepository.save(new SavinsAccount());
-//                }
-//                case CREDITCARD -> {
-//                    accountRepository.save(new CreditCard());
-//                }
+    public Account create(AccountDTO accountDTO) {
+        //Obtains the list of no repeated customers' dni
+        var customersDni= accountDTO.getCustomers();
+        //Creates a list to store customerObjects
+        List<Customer> customerList=new ArrayList<>();
+        //Iterates the list of dni and creates a list of customers
+        for (CustomerDTO customerDTO: accountDTO.getCustomers()) {
+            if(customerRepository.findByDni(customerDTO.getDni()).isPresent()){
+                customerList.add(customerRepository.findByDni(customerDTO.getDni()).get());
+            }else{
+                throw new UserNotFoundException(customerDTO.getDni());
             }
 
-//        public AdminDTO create(AdminDTO adminDTO){
-//            var adminNew= adminRepository.save(Admin.fromDTO(adminDTO));
-//            return AdminDTO.fromAdmin(adminNew);
-//        }
-        //var accountNew = accountRepository.save(Account.fromDTO(accountDTO));
-        //return AccountDTO.fromAccount(accountNew);
-//        var customerNew= customerRepository.save(Customer.fromDTO(customerDTO));
-//        return CustomerDTO.fromCustomer(customerNew);
-//        return null;
-        return null;
+        }
+        Account newAccount = null;
+        var type= accountDTO.getAccountType();
+        switch (type) {
+            case CHECKING_ACCOUNT -> newAccount = new CheckingAccount();
+
+            case STUDENT_ACCOUNT ->  newAccount= new StudentAccount();
+
+            case SAVINGS_ACCOUNT -> newAccount= new SavingsAccount();
+
+            case CREDITCARD ->  newAccount=new CreditCard();
+
+            default -> throw new AccountTypeNotFoundException(type);
+        }
+        newAccount.addOwners(customerList);
+        newAccount=accountRepository.save(newAccount);
+        return newAccount;
+
+
     }
 }

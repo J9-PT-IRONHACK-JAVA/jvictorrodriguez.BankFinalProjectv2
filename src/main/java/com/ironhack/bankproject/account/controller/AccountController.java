@@ -2,7 +2,6 @@ package com.ironhack.bankproject.account.controller;
 
 import com.ironhack.bankproject.account.dto.AccountDTO;
 import com.ironhack.bankproject.account.model.Account;
-import com.ironhack.bankproject.account.model.CheckingAccount;
 import com.ironhack.bankproject.account.service.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ public class AccountController {
     }
 
     @PostMapping("Create")
-    public AccountDTO create(@RequestBody @Valid AccountDTO accountDTO){
+    public Account create(@RequestBody @Valid AccountDTO accountDTO){
         return accountService.create(accountDTO);
     }
 }

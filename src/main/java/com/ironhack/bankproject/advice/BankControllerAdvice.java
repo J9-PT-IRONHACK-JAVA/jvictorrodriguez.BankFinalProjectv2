@@ -4,6 +4,7 @@ import com.ironhack.bankproject.user.exception.UserAlredyExistsException;
 import com.ironhack.bankproject.user.exception.UserNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,5 +43,12 @@ public class BankControllerAdvice {
     public String emptyResultDataAccessHandler(EmptyResultDataAccessException ex){
         return ex.getMessage();
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String errorInJsonInput(HttpMessageNotReadableException ex){
+        return ex.getMessage();
+    }
+
 
 }
