@@ -1,5 +1,6 @@
 package com.ironhack.bankproject.user.dto;
 
+import com.ironhack.bankproject.user.enums.Roles;
 import com.ironhack.bankproject.user.model.ThirdParty;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -14,13 +15,13 @@ public class ThirdPartyDTO {
     private String username;
     @Size(min = 6, max = 8, message = "Size between 6 and 8 characters")
     private String password;
-    private String roles;
+    private Roles roles;
     private String name;
     private String hashedKey;
     private Long id;
 
     public ThirdPartyDTO() {
-        this.roles="ROLE_THIRDPARTY";
+        this.roles=Roles.THIRD_PARTY;
     }
 
     public ThirdPartyDTO(String username, String password, String name, String hashedKey) {
@@ -28,7 +29,7 @@ public class ThirdPartyDTO {
         this.password = password;
         this.name = name;
         this.hashedKey = hashedKey;
-        this.roles="ROLE_THIRDPARTY";
+        this.roles=Roles.THIRD_PARTY;
     }
     public static ThirdPartyDTO fromThirdParty(ThirdParty thirdParty){
         var thirdPartyDTO= new ThirdPartyDTO();

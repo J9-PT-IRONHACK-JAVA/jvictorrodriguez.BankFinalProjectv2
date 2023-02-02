@@ -1,8 +1,7 @@
 package com.ironhack.bankproject.user.service;
 
-import com.ironhack.bankproject.user.dto.CustomerDTO;
 import com.ironhack.bankproject.user.dto.ThirdPartyDTO;
-import com.ironhack.bankproject.user.exception.UserNotFoundException;
+import com.ironhack.bankproject.user.exception.EmailNotFoundException;
 import com.ironhack.bankproject.user.model.ThirdParty;
 import com.ironhack.bankproject.user.repository.ThirdPartyRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,9 +39,9 @@ public class ThirdPartyService {
 
     public ThirdPartyDTO updatePatchMethod(ThirdPartyDTO thirdPartyDTO){
         var thirdPartyToUpdate= findByUserName(thirdPartyDTO.getUsername());
-        if(!thirdPartyDTO.getRoles().isEmpty()){
-            thirdPartyToUpdate.setRoles(thirdPartyDTO.getRoles());
-        }
+//        if(!thirdPartyDTO.getRoles().isEmpty()){
+//            thirdPartyToUpdate.setRoles(thirdPartyDTO.getRoles());
+//        }
         if(!thirdPartyDTO.getName().isEmpty()){
             thirdPartyToUpdate.setName(thirdPartyDTO.getName());
         }
@@ -57,6 +56,6 @@ public class ThirdPartyService {
     }
 
     private ThirdParty findByUserName(String username) {
-        return thirdPartyRepository.findByUsername(username).orElseThrow(()-> new UserNotFoundException(username));
+        return thirdPartyRepository.findByEmail(username).orElseThrow(()-> new EmailNotFoundException(username));
     }
 }

@@ -1,6 +1,7 @@
 package com.ironhack.bankproject.user.model;
 
 import com.ironhack.bankproject.user.dto.CustomerDTO;
+import com.ironhack.bankproject.user.enums.Roles;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -19,8 +20,6 @@ public class Customer extends User{
     @Size(min = 6,max=9,message = "Dni should have between 6 and 9 characters")
     @Column (unique = true)
     private String dni;
-    @Email(message = "Email should be valid")
-    private String email;
     @NotEmpty(message = "Name cannot be empty")
     private String name;
 
@@ -28,24 +27,21 @@ public class Customer extends User{
 
     @Embedded
     private Address address;
+
+
     public Customer() {
-        this.setRoles("ROLE_USER");
+
     }
 
-
-    public Customer(String username, String password, String roles,
-                    String dni, String email, String name) {
-        super(username, password, roles);
+    public Customer(String dni, String name, String dOB, Address address) {
         this.dni = dni;
-        this.email = email;
         this.name = name;
-
-        this.setRoles("ROLE_USER");
+        this.dOB = dOB;
+        this.address = address;
     }
 
     public static Customer fromDTO(CustomerDTO customerDTO){
         var customer= new Customer();
-        customer.setUsername(customerDTO.getUsername());
         customer.setPassword(customerDTO.getPassword());
         customer.setEmail(customerDTO.getEmail());
         customer.setName(customerDTO.getName());

@@ -18,15 +18,15 @@ public class Admin extends User{
     @NotEmpty (message = "Name cannot be empty")
     private String name;
 
-    public Admin(String username, String password, String roles,
-                 String email, String name) {
-        super(username, password, roles);
+
+    public Admin(String email, String name) {
         this.email = email;
         this.name = name;
     }
+
     public static Admin fromDTO(AdminDTO adminDTO){
         var admin=new Admin();
-        admin.setUsername(adminDTO.getUsername());
+
         admin.setPassword(adminDTO.getPassword());
         admin.setEmail(adminDTO.getEmail());
         admin.setName(adminDTO.getName());

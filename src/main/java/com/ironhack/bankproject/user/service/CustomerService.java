@@ -1,11 +1,8 @@
 package com.ironhack.bankproject.user.service;
 
-import com.ironhack.bankproject.user.dto.AdminDTO;
 import com.ironhack.bankproject.user.dto.CustomerDTO;
-import com.ironhack.bankproject.user.exception.UserNotFoundException;
-import com.ironhack.bankproject.user.model.Admin;
+import com.ironhack.bankproject.user.exception.EmailNotFoundException;
 import com.ironhack.bankproject.user.model.Customer;
-import com.ironhack.bankproject.user.model.User;
 import com.ironhack.bankproject.user.repository.CustomerRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +28,7 @@ public class CustomerService {
     public CustomerDTO update(CustomerDTO customerDTO) {
         //Looks for the user by username. if it doesn't exist throws an exception
         //else updates all 5 attributes
-        var customerToUpdate= findByUsername(customerDTO.getUsername());
+        var customerToUpdate= findByEmail(customerDTO.getUsername());
         customerToUpdate.setPassword(customerDTO.getPassword());
         customerToUpdate.setName(customerDTO.getName());
         customerToUpdate.setEmail(customerDTO.getEmail());
@@ -43,13 +40,13 @@ public class CustomerService {
 
 
     public CustomerDTO updatePatchMethod(CustomerDTO customerDTO) {
-        var customerToUpdate =findByUsername(customerDTO.getUsername());
-        if(!customerDTO.getRoles().isEmpty()){
-            customerToUpdate.setRoles(customerDTO.getRoles());
-        }
-        if (!customerDTO.getEmail().isEmpty()){
-            customerToUpdate.setEmail(customerDTO.getEmail());
-        }
+        var customerToUpdate = findByEmail(customerDTO.getUsername());
+//        if(!customerDTO.getRoles(){
+//            customerToUpdate.setRoles(customerDTO.getRoles());
+//        }
+//        if (!customerDTO.getEmail().isEmpty()){
+//            customerToUpdate.setEmail(customerDTO.getEmail());
+//        }
         if(!customerDTO.getName().isEmpty()){
             customerToUpdate.setName(customerDTO.getName());
         }
@@ -62,7 +59,7 @@ public class CustomerService {
         customerRepository.deleteById(customerDTO.getId());
     }
 
-    private Customer findByUsername(String username){
-        return customerRepository.findByUsername(username).orElseThrow(()-> new UserNotFoundException(username));
+    private Customer findByEmail(String email){
+        return customerRepository.findByEmail(email).orElseThrow(()-> new EmailNotFoundException(email));
     }
 }

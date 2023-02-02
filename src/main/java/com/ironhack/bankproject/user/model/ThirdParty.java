@@ -1,6 +1,7 @@
 package com.ironhack.bankproject.user.model;
 
 import com.ironhack.bankproject.user.dto.ThirdPartyDTO;
+import com.ironhack.bankproject.user.enums.Roles;
 import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,15 +15,15 @@ public class ThirdParty extends User{
    private String hashedKey;
    private String name;
 
-    public ThirdParty(String username, String password, String roles,
-                      String hashedKey, String name) {
-        super(username, password, roles);
+    public ThirdParty(String hashedKey, String name) {
         this.hashedKey = hashedKey;
         this.name = name;
+        this.setRoles(Roles.THIRD_PARTY);
     }
+
     public static ThirdParty fromThirdParty(ThirdPartyDTO thirdPartyDTO){
         var thirdParty= new ThirdParty();
-        thirdParty.setUsername(thirdPartyDTO.getUsername());
+
         thirdParty.setPassword(thirdPartyDTO.getPassword());
         thirdParty.setName(thirdPartyDTO.getName());
         thirdParty.setHashedKey(thirdPartyDTO.getHashedKey());

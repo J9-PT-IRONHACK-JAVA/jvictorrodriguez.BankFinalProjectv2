@@ -1,7 +1,7 @@
 package com.ironhack.bankproject.advice;
 
 import com.ironhack.bankproject.user.exception.UserAlredyExistsException;
-import com.ironhack.bankproject.user.exception.UserNotFoundException;
+import com.ironhack.bankproject.user.exception.EmailNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -27,9 +27,9 @@ public class BankControllerAdvice {
         });
         return errors;
     }
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler(EmailNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String usernameNotFoundHandler(UserNotFoundException ex){
+    public String usernameNotFoundHandler(EmailNotFoundException ex){
         return ex.getMessage();
     }
 

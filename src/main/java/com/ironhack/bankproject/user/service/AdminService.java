@@ -1,8 +1,7 @@
 package com.ironhack.bankproject.user.service;
 
 import com.ironhack.bankproject.user.dto.AdminDTO;
-import com.ironhack.bankproject.user.exception.UserAlredyExistsException;
-import com.ironhack.bankproject.user.exception.UserNotFoundException;
+import com.ironhack.bankproject.user.exception.EmailNotFoundException;
 import com.ironhack.bankproject.user.model.Admin;
 import com.ironhack.bankproject.user.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,9 +38,9 @@ public class AdminService {
 
     public AdminDTO updatePatchMethod(AdminDTO adminDTO) {
         var adminToUpdate =findByUsername(adminDTO.getUsername());
-        if(!adminDTO.getRoles().isEmpty()){
-            adminToUpdate.setRoles(adminDTO.getRoles());
-        }
+//        if(!adminDTO.getRoles().isEmpty()){
+//            adminToUpdate.setRoles(adminDTO.getRoles());
+//        }
         if (!adminDTO.getEmail().isEmpty()){
             adminToUpdate.setEmail(adminDTO.getEmail());
         }
@@ -58,8 +57,8 @@ public class AdminService {
               adminRepository.deleteById(adminDTO.getId());
     }
 
-    private Admin findByUsername(String username){
-        return adminRepository.findByUsername(username).orElseThrow(()-> new UserNotFoundException(username));
+    private Admin findByUsername(String email){
+        return adminRepository.findByEmail(email).orElseThrow(()-> new EmailNotFoundException(email));
     }
 
 }

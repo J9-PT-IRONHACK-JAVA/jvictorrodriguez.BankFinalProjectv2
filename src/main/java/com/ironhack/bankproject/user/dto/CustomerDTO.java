@@ -1,5 +1,6 @@
 package com.ironhack.bankproject.user.dto;
 
+import com.ironhack.bankproject.user.enums.Roles;
 import com.ironhack.bankproject.user.model.Address;
 import com.ironhack.bankproject.user.model.Customer;
 import jakarta.validation.constraints.Email;
@@ -27,10 +28,10 @@ public class CustomerDTO {
     private String dOB;
     private Address address;
     private Long id;
-    private String roles;
+    private Roles roles;
 
     public CustomerDTO() {
-        this.roles="ROLE_USER";
+        this.roles=Roles.USER;
     }
 
     public CustomerDTO(String username, String password,
@@ -42,7 +43,7 @@ public class CustomerDTO {
         this.name = name;
         this.dOB=dOB;
         this.address=getAddress();
-        this.roles = "ROLE_USER";
+        this.roles = Roles.USER;
     }
 
     public static CustomerDTO fromCustomer(Customer customer) {

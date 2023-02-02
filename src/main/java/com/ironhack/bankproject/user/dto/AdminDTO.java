@@ -1,5 +1,6 @@
 package com.ironhack.bankproject.user.dto;
 
+import com.ironhack.bankproject.user.enums.Roles;
 import com.ironhack.bankproject.user.model.Admin;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -21,9 +22,9 @@ public class AdminDTO {
     @NotEmpty(message = "Name cannot be empty")
     private String name;
     private Long id;
-    private String roles;
+    private Roles roles;
 
-    public AdminDTO(String username, String password, String email, String name, String roles) {
+    public AdminDTO(String username, String password, String email, String name, Roles roles) {
         this.username = username;
         this.password = password;
         this.email = email;

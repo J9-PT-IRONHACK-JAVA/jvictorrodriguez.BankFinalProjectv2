@@ -5,7 +5,7 @@ import com.ironhack.bankproject.account.exceptions.AccountTypeNotFoundException;
 import com.ironhack.bankproject.account.model.*;
 import com.ironhack.bankproject.account.repository.AccountRepository;
 import com.ironhack.bankproject.user.dto.CustomerDTO;
-import com.ironhack.bankproject.user.exception.UserNotFoundException;
+import com.ironhack.bankproject.user.exception.EmailNotFoundException;
 import com.ironhack.bankproject.user.model.Customer;
 import com.ironhack.bankproject.user.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,29 +39,23 @@ public class AccountService {
             if(customerRepository.findByDni(customerDTO.getDni()).isPresent()){
                 customerList.add(customerRepository.findByDni(customerDTO.getDni()).get());
             }else{
-                throw new UserNotFoundException(customerDTO.getDni());
+                throw new EmailNotFoundException(customerDTO.getDni());
             }
         }
         Account newAccount = null;
-
         var accountType= accountDTO.getAccountType();
         switch (accountType) {
             case CHECKING_ACCOUNT ->
-            {
-                //Check age first customer
+            { //Check age first customer
                 if(hasStudentAge(customerList.get(0).getDni())){
                     newAccount = new StudentAccount();
                 }else {
                     newAccount = new CheckingAccount();
                 }
             }
-
             case STUDENT_ACCOUNT ->  newAccount= new StudentAccount();
-
             case SAVINGS_ACCOUNT -> newAccount= new SavingsAccount();
-
             case CREDITCARD ->  newAccount=new CreditCard();
-
             default -> throw new AccountTypeNotFoundException(accountType);
         }
         newAccount.addOwners(customerList);
