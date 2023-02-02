@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Entity
 public class SavingsAccount extends Account {
 
-    private final double MAXIMUM_INTEREST_RATE= 0.0025;
+    private final double MAXIMUM_INTEREST_RATE= 0.5;
     @Column(insertable=false, updatable=false)
     private final double DEFAULT_INTEREST_RATE= 0.0025;
     private final BigDecimal MINIMUM_BALANCE= new BigDecimal("100");

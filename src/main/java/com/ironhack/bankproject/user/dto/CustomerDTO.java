@@ -1,8 +1,10 @@
 package com.ironhack.bankproject.user.dto;
 
+import com.ironhack.bankproject.user.model.Address;
 import com.ironhack.bankproject.user.model.Customer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +23,9 @@ public class CustomerDTO {
     private String email;
     @NotEmpty(message = "Name cannot be empty")
     private String name;
+    @Pattern(regexp = "^(0?[1-9]|[12][0-9]|3[01])[\\/\\-](0?[1-9]|1[012])[\\/\\-]\\d{4}$",message = "format-> dd/MM/yyyy")
+    private String dOB;
+    private Address address;
     private Long id;
     private String roles;
 
@@ -35,6 +40,8 @@ public class CustomerDTO {
         this.dni = dni;
         this.email = email;
         this.name = name;
+        this.dOB=dOB;
+        this.address=getAddress();
         this.roles = "ROLE_USER";
     }
 
@@ -46,6 +53,8 @@ public class CustomerDTO {
         customerDTO.setName(customer.getName());
         customerDTO.setEmail(customer.getEmail());
         customerDTO.setDni(customer.getDni());
+        customerDTO.setAddress(customer.getAddress());
+        customerDTO.setDOB(customer.getDOB());
         return customerDTO;
     }
 }

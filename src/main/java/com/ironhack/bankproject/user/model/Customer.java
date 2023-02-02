@@ -2,6 +2,7 @@ package com.ironhack.bankproject.user.model;
 
 import com.ironhack.bankproject.user.dto.CustomerDTO;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -23,9 +24,14 @@ public class Customer extends User{
     @NotEmpty(message = "Name cannot be empty")
     private String name;
 
+    private String dOB;
+
+    @Embedded
+    private Address address;
     public Customer() {
         this.setRoles("ROLE_USER");
     }
+
 
     public Customer(String username, String password, String roles,
                     String dni, String email, String name) {
@@ -33,6 +39,7 @@ public class Customer extends User{
         this.dni = dni;
         this.email = email;
         this.name = name;
+
         this.setRoles("ROLE_USER");
     }
 
@@ -44,6 +51,8 @@ public class Customer extends User{
         customer.setName(customerDTO.getName());
         customer.setId(customerDTO.getId());
         customer.setDni(customerDTO.getDni());
+        customer.setDOB(customerDTO.getDOB());
+        customer.setAddress(customerDTO.getAddress());
         return customer;
     }
 

@@ -12,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,12 +41,20 @@ public class AccountService {
             }else{
                 throw new UserNotFoundException(customerDTO.getDni());
             }
-
         }
         Account newAccount = null;
-        var type= accountDTO.getAccountType();
-        switch (type) {
-            case CHECKING_ACCOUNT -> newAccount = new CheckingAccount();
+
+        var accountType= accountDTO.getAccountType();
+        switch (accountType) {
+            case CHECKING_ACCOUNT ->
+            {
+                //Check age first customer
+                if(hasStudentAge(customerList.get(0).getDni())){
+                    newAccount = new StudentAccount();
+                }else {
+                    newAccount = new CheckingAccount();
+                }
+            }
 
             case STUDENT_ACCOUNT ->  newAccount= new StudentAccount();
 
@@ -51,12 +62,31 @@ public class AccountService {
 
             case CREDITCARD ->  newAccount=new CreditCard();
 
-            default -> throw new AccountTypeNotFoundException(type);
+            default -> throw new AccountTypeNotFoundException(accountType);
         }
         newAccount.addOwners(customerList);
         newAccount=accountRepository.save(newAccount);
         return newAccount;
+        }
+
+
+    public boolean hasStudentAge (String dni){
+        int studentAgeLower=24;
+        String dob = "01/01/1900";
+        if (customerRepository.findByDni(dni).isPresent()){
+           dob=customerRepository.findByDni(dni).get().getDOB()   ;
+            System.out.println(dob);
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDate fechaNacimiento = LocalDate.parse(dob, formatter);
+        Period edad = Period.between(fechaNacimiento, LocalDate.now());
+        int age = edad.getYears();
+        System.out.println(age);
+        return age < studentAgeLower;
 
 
     }
+
 }
