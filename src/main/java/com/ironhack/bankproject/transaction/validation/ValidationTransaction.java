@@ -7,10 +7,16 @@ import com.ironhack.bankproject.account.repository.AccountRepository;
 import com.ironhack.bankproject.security.JpaUserDetailsService;
 import com.ironhack.bankproject.transaction.dto.TransactionDTO;
 import com.ironhack.bankproject.transaction.enums.TransactionType;
+import com.ironhack.bankproject.user.exception.UserNotFoundException;
 import com.ironhack.bankproject.user.model.Customer;
+import com.ironhack.bankproject.user.model.User;
+import com.ironhack.bankproject.user.repository.CustomerRepository;
+import com.ironhack.bankproject.user.repository.UserRepository;
 import lombok.Data;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -22,25 +28,44 @@ import java.util.Objects;
 public class ValidationTransaction {
 
     private final AccountRepository accountRepository;
-    private final JpaUserDetailsService jpaUserDetailsService;
+    private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
 
+    private boolean checkLoggedUser(TransactionDTO transactionDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        var username = authentication.getName();
+        var userLogged = userRepository.findByUsername(username);
+        User user = null;
+        if (userLogged.isPresent()) {
+            user = userRepository.findByUsername(username).orElseThrow();
+        }
 
+        var customer = customerRepository.findByDni(transactionDTO.getSenderId()).orElseThrow();
+        if (Objects.equals(customer.getId(), Objects.requireNonNull(user).getId()))
+            return true;
+        if (user.getRoles().contains("ADMIN"))
+            return true;
+
+        throw new UserNotFoundException("User not logged");
+    }
 
     public Account findAccountById(Long id) {
         return accountRepository.findById(id).orElseThrow(() -> new AccountIdNotFoundException(id));
     }
 
     public void checkForTransfer(TransactionDTO transactionDTO) {
+        checkLoggedUser(transactionDTO);
         checksAccountExist(transactionDTO);
         checksPositiveAmount(transactionDTO);
         checksCustomerAccount(transactionDTO);
         checksSenderAccountBalance(transactionDTO);
-//todo         var userInfo=jpaUserDetailsService.loadUserByUsername();
-       // System.out.println("UserInfo==========="+ userInfo);
+
+
         //checksPassword(transferDTO);
     }
 
-    public void checkForCash(TransactionDTO transactionDTO){
+    public void checkForCash(TransactionDTO transactionDTO) {
+        checkLoggedUser(transactionDTO);
         checksAccountExist(transactionDTO.getAccountFrom());
         checksPositiveAmount(transactionDTO);
         checksCustomerAccount(transactionDTO);
@@ -49,13 +74,7 @@ public class ValidationTransaction {
     public void checksAccountExist(Long id) {
         //Checks if accounts exist and they are different
         findAccountById(id);
-
     }
-//    public void checksPositiveAmount(BigDecimal amount) {
-//        //Checks if the amount is positive
-//        if (!(amount.compareTo(BigDecimal.ZERO) > 0))
-//            throw new AmountNotPositiveException();
-//    }
 
 
     public void checksAccountExist(TransactionDTO transactionDTO) {
@@ -98,7 +117,7 @@ public class ValidationTransaction {
 
 
         //Check target account
-        if (transactionDTO.getTransactionType()== TransactionType.TRANSFER) {
+        if (transactionDTO.getTransactionType() == TransactionType.TRANSFER) {
 
             var targetAccount = accountRepository.findById(transactionDTO.getAccountTo()).orElseThrow();
             var statusTargetAccount = targetAccount.getStatus();

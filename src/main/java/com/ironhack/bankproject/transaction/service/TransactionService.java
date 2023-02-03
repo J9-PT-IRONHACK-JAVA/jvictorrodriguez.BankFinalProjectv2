@@ -6,7 +6,9 @@ import com.ironhack.bankproject.transaction.model.Transfer;
 import com.ironhack.bankproject.transaction.dto.TransactionDTO;
 import com.ironhack.bankproject.transaction.repository.TransactionRepository;
 import com.ironhack.bankproject.transaction.validation.ValidationTransaction;
+import com.ironhack.bankproject.user.model.User;
 import com.ironhack.bankproject.user.repository.CustomerRepository;
+import com.ironhack.bankproject.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,20 +22,15 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final CustomerRepository customerRepository;
     private final ValidationTransaction validationTransaction;
+    private final FeeService feeService;
 
 
     public Transfer sendMoney(TransactionDTO transactionDTO) {
-
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        var currentUser = authentication.getName();
-        System.out.println(currentUser);
-
-
-
-
-        //Checks all the data
+        //Checks all the data for the transaction
         validationTransaction.checkForTransfer(transactionDTO);
+        //Obtains the applicable fee
+        Money applyFee = feeService.doIApplyFee(transactionDTO);
+        applyFees(transactionDTO,applyFee);
         //Creates the Transfer
         var newTransfer = new Transfer();
         newTransfer.setAccountFrom(transactionDTO.getAccountFrom());
@@ -52,17 +49,23 @@ public class TransactionService {
 
     @Transactional
     public void moveTheMoney(TransactionDTO transactionDTO) {
-       var accountSender=validationTransaction.findAccountById(transactionDTO.getAccountFrom());
-       var accountTarget=validationTransaction.findAccountById( transactionDTO.getAccountTo());
-       accountSender.setBalance(new Money(accountSender.getBalance().decreaseAmount(transactionDTO.getAmount())));
-       accountTarget.setBalance(new Money(accountTarget.getBalance().increaseAmount(transactionDTO.getAmount())));
+        var accountSender = validationTransaction.findAccountById(transactionDTO.getAccountFrom());
+        var accountTarget = validationTransaction.findAccountById(transactionDTO.getAccountTo());
+        accountSender.setBalance(new Money(accountSender.getBalance().decreaseAmount(transactionDTO.getAmount())));
+        accountTarget.setBalance(new Money(accountTarget.getBalance().increaseAmount(transactionDTO.getAmount())));
     }
 
-    @Transactional
     public void moveTheCash(TransactionDTO transactionDTO) {
-        var accountSender=validationTransaction.findAccountById(transactionDTO.getAccountFrom());
+        var accountSender = validationTransaction.findAccountById(transactionDTO.getAccountFrom());
         accountSender.setBalance(new Money(accountSender.getBalance().decreaseAmount(transactionDTO.getAmount())));
     }
+
+    public void applyFees(TransactionDTO transactionDTO,Money fees) {
+        var accountSender = validationTransaction.findAccountById(transactionDTO.getAccountFrom());
+        accountSender.setBalance(new Money(accountSender.getBalance().decreaseAmount(fees)));
+    }
+
+
     public String getSendersName(String id) {
         var sender = customerRepository.findByDni(id).orElseThrow();
         return sender.getName();
@@ -70,7 +73,7 @@ public class TransactionService {
 
     public Cash depositWithdraw(TransactionDTO transactionDTO) {
 
-        var cash= new Cash();
+        var cash = new Cash();
         cash.setAccountFrom(cash.getAccountFrom());
         cash.setAmount(transactionDTO.getAmount());
         cash.setTransactionType(transactionDTO.getTransactionType());
