@@ -93,4 +93,10 @@ public class BankControllerAdvice {
     public String accountNotBelongsToSenderException(AccountNotBelongsToSenderException ex){
         return ex.getMessage();
     }
+
+    @ExceptionHandler(FraudDetectionException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String accountNotBelongsToSenderException(FraudDetectionException ex){
+        return ex.getMessage();
+    }
 }

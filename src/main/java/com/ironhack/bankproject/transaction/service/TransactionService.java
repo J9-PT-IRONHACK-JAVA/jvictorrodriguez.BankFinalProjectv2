@@ -15,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
@@ -30,7 +32,9 @@ public class TransactionService {
         validationTransaction.checkForTransfer(transactionDTO);
         //Obtains the applicable fee
         Money applyFee = feeService.doIApplyFee(transactionDTO);
-        applyFees(transactionDTO,applyFee);
+        if (!(applyFee.getAmount().compareTo(BigDecimal.ZERO)==0)){
+            applyFees(transactionDTO,applyFee);
+        }
         //Creates the Transfer
         var newTransfer = new Transfer();
         newTransfer.setAccountFrom(transactionDTO.getAccountFrom());
@@ -43,7 +47,20 @@ public class TransactionService {
         moveTheMoney(transactionDTO);
         return transactionRepository.save(newTransfer);
     }
-
+    public Cash depositWithdraw(TransactionDTO transactionDTO) {
+        //Obtains the applicable fee
+        Money applyFee = feeService.doIApplyFee(transactionDTO);
+        if (!(applyFee.getAmount().compareTo(BigDecimal.ZERO)==0)){
+            applyFees(transactionDTO,applyFee);
+        }
+        var cash = new Cash();
+        cash.setAccountFrom(cash.getAccountFrom());
+        cash.setAmount(transactionDTO.getAmount());
+        cash.setTransactionType(transactionDTO.getTransactionType());
+        validationTransaction.checkForTransfer(transactionDTO);
+        moveTheCash(transactionDTO);
+        return transactionRepository.save(cash);
+    }
 
 
 
@@ -71,14 +88,5 @@ public class TransactionService {
         return sender.getName();
     }
 
-    public Cash depositWithdraw(TransactionDTO transactionDTO) {
 
-        var cash = new Cash();
-        cash.setAccountFrom(cash.getAccountFrom());
-        cash.setAmount(transactionDTO.getAmount());
-        cash.setTransactionType(transactionDTO.getTransactionType());
-        validationTransaction.checkForTransfer(transactionDTO);
-        moveTheCash(transactionDTO);
-        return transactionRepository.save(cash);
-    }
 }
