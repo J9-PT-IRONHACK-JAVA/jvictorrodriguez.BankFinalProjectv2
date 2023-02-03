@@ -48,11 +48,14 @@
 
 
 
-{ "username": "u100100",
+{ 
+
+"username": "u100100",
     "password": "password",
     "email": "admin1@correo.es",
     "name": "Federico Martín",
     "roles": "ROLE_ADMIN"
+
 }  
 
 | JSON | :attributes: | @Valid                                                              |
