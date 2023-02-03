@@ -7,9 +7,9 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
-  profiles:
-    active: demo
+      ddl-auto: update
+#  profiles:
+#    active: demo
 
 server:
   port: 8080

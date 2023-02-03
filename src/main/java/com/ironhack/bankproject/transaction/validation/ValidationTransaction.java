@@ -1,19 +1,16 @@
 package com.ironhack.bankproject.transaction.validation;
 
-import com.ironhack.bankproject.Money;
 import com.ironhack.bankproject.account.enums.Status;
 import com.ironhack.bankproject.account.exceptions.*;
 import com.ironhack.bankproject.account.model.Account;
 import com.ironhack.bankproject.account.repository.AccountRepository;
 import com.ironhack.bankproject.security.JpaUserDetailsService;
-import com.ironhack.bankproject.transaction.dto.CashDTO;
-import com.ironhack.bankproject.transaction.dto.TransferDTO;
+import com.ironhack.bankproject.transaction.dto.TransactionDTO;
+import com.ironhack.bankproject.transaction.enums.TransactionType;
 import com.ironhack.bankproject.user.model.Customer;
 import lombok.Data;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -33,38 +30,38 @@ public class ValidationTransaction {
         return accountRepository.findById(id).orElseThrow(() -> new AccountIdNotFoundException(id));
     }
 
-    public void checkAll(TransferDTO transferDTO) {
-        checksAccountExist(transferDTO);
-        checksAmount(transferDTO);
-        checksCustomerAccount(transferDTO);
-        checksSenderAccountBalance(transferDTO);
+    public void checkForTransfer(TransactionDTO transactionDTO) {
+        checksAccountExist(transactionDTO);
+        checksPositiveAmount(transactionDTO);
+        checksCustomerAccount(transactionDTO);
+        checksSenderAccountBalance(transactionDTO);
 //todo         var userInfo=jpaUserDetailsService.loadUserByUsername();
        // System.out.println("UserInfo==========="+ userInfo);
         //checksPassword(transferDTO);
     }
 
-//    public void checkAll(CashDTO cashDTO){
-//        checksAccountExist(cashDTO.getAccountFrom());
-//        checksAmount(cashDTO.getAmount().getAmount());
-//        checksCustomerAccount(cashDTO.getAccountFrom());
-//    }
+    public void checkForCash(TransactionDTO transactionDTO){
+        checksAccountExist(transactionDTO.getAccountFrom());
+        checksPositiveAmount(transactionDTO);
+        checksCustomerAccount(transactionDTO);
+    }
 
     public void checksAccountExist(Long id) {
         //Checks if accounts exist and they are different
         findAccountById(id);
 
     }
-    public void checksAmount(BigDecimal amount) {
-        //Checks if the amount is positive
-        if (!(amount.compareTo(BigDecimal.ZERO) > 0))
-            throw new AmountNotPositiveException();
-    }
+//    public void checksPositiveAmount(BigDecimal amount) {
+//        //Checks if the amount is positive
+//        if (!(amount.compareTo(BigDecimal.ZERO) > 0))
+//            throw new AmountNotPositiveException();
+//    }
 
 
-    public void checksAccountExist(TransferDTO transferDTO) {
+    public void checksAccountExist(TransactionDTO transactionDTO) {
         //Checks if accounts exist and they are different
-        var accountFromId = transferDTO.getAccountFrom();
-        var accountToId = transferDTO.getAccountTo();
+        var accountFromId = transactionDTO.getAccountFrom();
+        var accountToId = transactionDTO.getAccountTo();
         if (Objects.equals(accountFromId, accountToId)) throw new BothAccountAreEqualsException();
 
         findAccountById(accountFromId);
@@ -72,22 +69,22 @@ public class ValidationTransaction {
     }
 
 
-    public void checksAmount(TransferDTO transferDTO) {
+    public void checksPositiveAmount(TransactionDTO transactionDTO) {
         //Checks if the amount is positive
-        var amount = transferDTO.getAmount().getAmount();
+        var amount = transactionDTO.getAmount().getAmount();
         if (!(amount.compareTo(BigDecimal.ZERO) > 0))
             throw new AmountNotPositiveException();
     }
 
-    public void checksCustomerAccount(TransferDTO transferDTO) {
+    public void checksCustomerAccount(TransactionDTO transactionDTO) {
         //Check senders account
-        var senderAccount = accountRepository.findById(transferDTO.getAccountFrom()).orElseThrow();
+        var senderAccount = accountRepository.findById(transactionDTO.getAccountFrom()).orElseThrow();
 
         //Check if the account belongs to the accountHolder
         var ownerList = senderAccount.getOwners();
         boolean accountBelongsToSender = false;
         for (Customer customer : ownerList) {
-            if (customer.getDni().equalsIgnoreCase((transferDTO.getSenderId()))) {
+            if (customer.getDni().equalsIgnoreCase((transactionDTO.getSenderId()))) {
                 accountBelongsToSender = true;
                 break;
             }
@@ -99,16 +96,21 @@ public class ValidationTransaction {
         if (statusSenderAccount == Status.FROZEN)
             throw new AccountNotActiveException("Sender");
 
+
         //Check target account
-        var targetAccount = accountRepository.findById(transferDTO.getAccountTo()).orElseThrow();
-        var statusTargetAccount = targetAccount.getStatus();
-        if (statusTargetAccount == Status.FROZEN)
-            throw new AccountNotActiveException("Target");
+        if (transactionDTO.getTransactionType()== TransactionType.TRANSFER) {
+
+            var targetAccount = accountRepository.findById(transactionDTO.getAccountTo()).orElseThrow();
+            var statusTargetAccount = targetAccount.getStatus();
+            if (statusTargetAccount == Status.FROZEN)
+                throw new AccountNotActiveException("Target");
+        }
+
     }
 
-    public void checksSenderAccountBalance(TransferDTO transferDTO) {
-        var amountToTransfer = transferDTO.getAmount().getAmount();
-        var senderAccount = findAccountById(transferDTO.getAccountFrom());
+    public void checksSenderAccountBalance(TransactionDTO transactionDTO) {
+        var amountToTransfer = transactionDTO.getAmount().getAmount();
+        var senderAccount = findAccountById(transactionDTO.getAccountFrom());
         var senderAccountBalance = senderAccount.getBalance().getAmount();
         if (!(senderAccountBalance.compareTo(amountToTransfer) > 0)) {
             throw new InsufficientBalanceException();
