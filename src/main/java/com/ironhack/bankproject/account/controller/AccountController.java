@@ -23,7 +23,6 @@ public class AccountController {
     public Account create(@RequestBody @Valid AccountDTO accountDTO){
         return accountService.create(accountDTO);
     }
-
     @PatchMapping("Freeze")
     public Account freezeAccount(@RequestBody @Valid AccountDTO accountDTO){
         return accountService.freezeAccount(accountDTO);
