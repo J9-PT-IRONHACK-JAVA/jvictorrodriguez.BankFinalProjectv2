@@ -1,7 +1,6 @@
 package com.ironhack.bankproject.advice;
 
-import com.ironhack.bankproject.account.exceptions.AccountIdNotFoundException;
-import com.ironhack.bankproject.account.exceptions.CannotCancelAnAccountWithBalanceException;
+import com.ironhack.bankproject.account.exceptions.*;
 import com.ironhack.bankproject.user.exception.UserAlredyExistsException;
 import com.ironhack.bankproject.user.exception.UserNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -61,6 +60,37 @@ public class BankControllerAdvice {
     @ExceptionHandler(CannotCancelAnAccountWithBalanceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String existsBalanceInAccountToDelete(CannotCancelAnAccountWithBalanceException ex){
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(BothAccountAreEqualsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String bothAccountsAreEqualsException(BothAccountAreEqualsException ex){
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(AmountNotPositiveException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String amountNotPositiveException(AmountNotPositiveException ex){
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(AccountNotActiveException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String AccountNotActiveException(AccountNotActiveException ex){
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(InsufficientBalanceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String insufficientBalanceException(InsufficientBalanceException ex){
+        return ex.getMessage();
+    }
+
+
+    @ExceptionHandler(AccountNotBelongsToSenderException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String accountNotBelongsToSenderException(AccountNotBelongsToSenderException ex){
         return ex.getMessage();
     }
 }

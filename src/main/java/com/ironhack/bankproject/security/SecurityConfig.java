@@ -28,7 +28,7 @@ public class SecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/Public").permitAll()
+                .requestMatchers("/Transaction/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/AdminAccess/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/AdminAccess/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/AdminAccess/**").hasRole("ADMIN")

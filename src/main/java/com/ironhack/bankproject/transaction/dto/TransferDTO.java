@@ -2,7 +2,9 @@ package com.ironhack.bankproject.transaction.dto;
 
 import com.ironhack.bankproject.Money;
 import jakarta.persistence.Embedded;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,16 +14,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TransferDTO {
 
-    @NotEmpty
+
     private Long accountFrom;
-    @NotEmpty
+
     private Long accountTo;
     @Embedded
     private Money amount;
-    @NotEmpty
+    @NotBlank(message = "Name is mandatory")
     private String TargetName;
     private String observations;
-    @NotEmpty
+
     private String senderId;
 
     // private TransactionType transactionType; // it's a transfer

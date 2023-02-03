@@ -1,4 +1,4 @@
-package com.ironhack.bankproject.transaction;
+package com.ironhack.bankproject.transaction.model;
 
 import com.ironhack.bankproject.Money;
 import jakarta.persistence.*;
@@ -14,14 +14,14 @@ public abstract class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty
+
     private Long accountFrom;
-    @NotEmpty
+
     private Long accountTo;
-    @Embedded
+
     private Money amount;
     @CreationTimestamp
     private Instant dateTime;
-    @NotEmpty
+
     private String senderId;//Sender's DNI
 }

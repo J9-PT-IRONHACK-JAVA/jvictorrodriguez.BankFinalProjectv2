@@ -1,4 +1,4 @@
-package com.ironhack.bankproject.transaction;
+package com.ironhack.bankproject.transaction.model;
 
 import com.ironhack.bankproject.transaction.enums.TransactionType;
 import jakarta.persistence.Entity;

@@ -7,6 +7,7 @@ import com.ironhack.bankproject.account.enums.Status;
 import com.ironhack.bankproject.user.dto.CustomerDTO;
 import com.ironhack.bankproject.user.model.Customer;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -26,6 +27,7 @@ public class Account {
     private String description;
     @Embedded
     private Money balance;
+    @NotNull
     @Enumerated (EnumType.STRING)
     private Status status;
     @CreationTimestamp
@@ -54,7 +56,7 @@ public class Account {
             joinColumns = @JoinColumn (name = "account_id"),
             inverseJoinColumns = @JoinColumn( name ="customer_id")
     )
-    @JsonIgnore
+    //@JsonIgnore
     private Set<Customer> owners= new HashSet<>();
 
     public Account() {
