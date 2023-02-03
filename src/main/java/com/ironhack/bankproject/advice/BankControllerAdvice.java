@@ -1,5 +1,7 @@
 package com.ironhack.bankproject.advice;
 
+import com.ironhack.bankproject.account.exceptions.AccountIdNotFoundException;
+import com.ironhack.bankproject.account.exceptions.CannotCancelAnAccountWithBalanceException;
 import com.ironhack.bankproject.user.exception.UserAlredyExistsException;
 import com.ironhack.bankproject.user.exception.UserNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -50,5 +52,15 @@ public class BankControllerAdvice {
         return ex.getMessage();
     }
 
+    @ExceptionHandler(AccountIdNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String accountIdNotFound(AccountIdNotFoundException ex){
+        return ex.getMessage();
+    }
 
+    @ExceptionHandler(CannotCancelAnAccountWithBalanceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String existsBalanceInAccountToDelete(CannotCancelAnAccountWithBalanceException ex){
+        return ex.getMessage();
+    }
 }

@@ -1,6 +1,7 @@
 package com.ironhack.bankproject.account.dto;
 
 import com.ironhack.bankproject.account.enums.AccountType;
+import com.ironhack.bankproject.account.enums.Status;
 import com.ironhack.bankproject.account.model.Account;
 import com.ironhack.bankproject.user.dto.CustomerDTO;
 import com.ironhack.bankproject.user.model.Customer;
@@ -26,6 +27,7 @@ public class AccountDTO {
  private String creditLimit;
  private String minimumBalance;
  private Long id;
+ private Status status;
 
  public static AccountDTO fromAccount(Account account){
   var accountDTO=new AccountDTO();

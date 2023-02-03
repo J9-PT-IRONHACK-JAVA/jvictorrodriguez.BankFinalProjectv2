@@ -1,7 +1,7 @@
 package com.ironhack.bankproject.account.exceptions;
 
 import com.ironhack.bankproject.account.enums.AccountType;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+
 
 public class AccountTypeNotFoundException extends RuntimeException {
     public AccountTypeNotFoundException(AccountType accountType) {
