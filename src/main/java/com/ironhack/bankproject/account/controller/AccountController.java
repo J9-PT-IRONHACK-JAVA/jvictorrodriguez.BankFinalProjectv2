@@ -18,7 +18,6 @@ public class AccountController {
     public List<Account> findAll(){
         return accountService.findAll();
     }
-
     @PostMapping("Create")
     public Account create(@RequestBody @Valid AccountDTO accountDTO){
         return accountService.create(accountDTO);
