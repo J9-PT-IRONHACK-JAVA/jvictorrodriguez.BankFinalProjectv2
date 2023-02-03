@@ -6,6 +6,7 @@ import com.ironhack.bankproject.user.exception.UserNotFoundException;
 import com.ironhack.bankproject.user.model.Admin;
 import com.ironhack.bankproject.user.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminService {
     private final AdminRepository adminRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<Admin> findAll() {
         return adminRepository.findAll();
@@ -28,7 +30,7 @@ public class AdminService {
         //Looks for the user by username. if it doesn't exist throws an exception
         //else updates all 4 attributes
         var adminToUpdate =findByUsername(adminDTO.getUsername());
-        adminToUpdate.setPassword(adminDTO.getPassword());
+        adminToUpdate.setPassword(passwordEncoder.encode(adminDTO.getPassword()));
         adminToUpdate.setName(adminToUpdate.getName());
         adminToUpdate.setEmail(adminToUpdate.getEmail());
         adminToUpdate.setRoles(adminToUpdate.getRoles());
@@ -49,7 +51,7 @@ public class AdminService {
             adminToUpdate.setName(adminDTO.getName());
         }
         if(!adminDTO.getPassword().isEmpty()){
-            adminToUpdate.setPassword(adminDTO.getPassword());}
+            adminToUpdate.setPassword(passwordEncoder.encode(adminDTO.getPassword()));}
         return AdminDTO.fromAdmin(adminToUpdate);
     }
 

@@ -18,9 +18,20 @@ public class AccountController {
     public List<Account> findAll(){
         return accountService.findAll();
     }
-
     @PostMapping("Create")
     public Account create(@RequestBody @Valid AccountDTO accountDTO){
         return accountService.create(accountDTO);
+    }
+    @PatchMapping("Freeze")
+    public Account freezeAccount(@RequestBody @Valid AccountDTO accountDTO){
+        return accountService.freezeAccount(accountDTO);
+    }
+    @PatchMapping("Active")
+    public Account activeAccount(@RequestBody @Valid AccountDTO accountDTO){
+        return accountService.activeAccount(accountDTO);
+    }
+    @DeleteMapping("Delete")
+    public void delete(@RequestBody AccountDTO accountDTO){
+        accountService.delete(accountDTO);
     }
 }

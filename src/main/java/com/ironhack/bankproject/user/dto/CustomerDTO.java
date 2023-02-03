@@ -2,10 +2,7 @@ package com.ironhack.bankproject.user.dto;
 
 import com.ironhack.bankproject.user.model.Address;
 import com.ironhack.bankproject.user.model.Customer;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +20,8 @@ public class CustomerDTO {
     private String email;
     @NotEmpty(message = "Name cannot be empty")
     private String name;
+
+
     @Pattern(regexp = "^(0?[1-9]|[12][0-9]|3[01])[\\/\\-](0?[1-9]|1[012])[\\/\\-]\\d{4}$",message = "format-> dd/MM/yyyy")
     private String dOB;
     private Address address;
