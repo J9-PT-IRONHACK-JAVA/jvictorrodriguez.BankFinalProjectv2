@@ -23,10 +23,10 @@
 
 #### Repository
 #### Service
-| MethodName | Parameters | Parameters |EndPoint     |
-|--------- ---|-----------|----------- |-------------------------------------------------|
-| findByAll:  | :Long id: |  :Long id: |http://localhost:8080/AdminAcces/Account/All --|
-| findById:   | Long id   | -----------|                                              |
+|  MethodName | Parameters | verb | EndPoint                                         |
+|------------:|:----------:|:----:|:-------------------------------------------------|
+|   findByAll |            | GET  | http://localhost:8080/AdminAcces/Account/All --  |
+|    findById |  Long id   | GET  |                                                  |
 
 
 - findById(Long id)
