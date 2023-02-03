@@ -1,5 +1,6 @@
 package com.ironhack.bankproject.transaction.validation;
 
+import com.ironhack.bankproject.account.exceptions.AccountIdNotFoundException;
 import com.ironhack.bankproject.account.model.Account;
 import com.ironhack.bankproject.account.repository.AccountRepository;
 import com.ironhack.bankproject.transaction.dto.TransferDTO;
@@ -18,13 +19,14 @@ public class ValidationTransaction {
 
     public void checksAccountExist(TransferDTO transferDTO){
         //Checks if accounts exist
-//        transferDTO.getAccountTo()
-//        transferDTO.getAccountFrom()
+        findAccountById(transferDTO.getAccountFrom());
+        findAccountById(transferDTO.getAccountTo());
+
 
     }
 
-    public Account findAccountById(Long id){
-        return null;
+    public void findAccountById(Long id){
+        accountRepository.findById(id).orElseThrow(() -> new AccountIdNotFoundException(id));
     }
 
 }

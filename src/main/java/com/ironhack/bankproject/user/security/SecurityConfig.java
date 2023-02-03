@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/AdminAccess/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/AdminAccess/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/AdminAccess/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/Transaction/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
