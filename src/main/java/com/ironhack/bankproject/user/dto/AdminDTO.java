@@ -21,6 +21,7 @@ public class AdminDTO {
     @NotEmpty(message = "Name cannot be empty")
     private String name;
     private Long id;
+    @NotEmpty(message = "e.g. ROLE_ADMIN")
     private String roles;
 
     public AdminDTO(String username, String password, String email, String name, String roles) {
