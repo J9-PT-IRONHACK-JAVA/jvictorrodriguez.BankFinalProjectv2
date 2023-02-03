@@ -61,7 +61,15 @@ public class TransactionService {
     @Transactional
     public void moveTheCash(TransactionDTO transactionDTO) {
         var accountSender=validationTransaction.findAccountById(transactionDTO.getAccountFrom());
-        accountSender.setBalance(new Money(accountSender.getBalance().decreaseAmount(transactionDTO.getAmount())));
+        switch (transactionDTO.getTransactionType()){
+            case DEPOSIT -> {
+                accountSender.setBalance(new Money(accountSender.getBalance().increaseAmount(transactionDTO.getAmount())));
+            }
+            case WITHDRAW -> {
+                accountSender.setBalance(new Money(accountSender.getBalance().decreaseAmount(transactionDTO.getAmount())));
+            }
+        }
+
     }
     public String getSendersName(String id) {
         var sender = customerRepository.findByDni(id).orElseThrow();
@@ -74,7 +82,7 @@ public class TransactionService {
         cash.setAccountFrom(cash.getAccountFrom());
         cash.setAmount(transactionDTO.getAmount());
         cash.setTransactionType(transactionDTO.getTransactionType());
-        validationTransaction.checkForTransfer(transactionDTO);
+       // validationTransaction.checkForTransfer(transactionDTO);
         moveTheCash(transactionDTO);
         return transactionRepository.save(cash);
     }

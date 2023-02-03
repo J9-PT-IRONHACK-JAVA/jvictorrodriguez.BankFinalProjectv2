@@ -5,7 +5,7 @@ import com.ironhack.bankproject.transaction.enums.TransactionType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.NotBlank;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +22,7 @@ public class TransactionDTO {
     private Long accountTo;
     @Embedded
     private Money amount;
-    @NotBlank(message = "Name is mandatory")
+
     private String TargetName;
     private String observations;
 
