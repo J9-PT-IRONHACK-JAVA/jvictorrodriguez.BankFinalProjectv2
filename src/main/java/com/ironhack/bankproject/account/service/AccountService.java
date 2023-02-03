@@ -44,6 +44,7 @@ public class AccountService {
         //Creates a list to store customerObjects
         List<Customer> customerList = new ArrayList<>();
         //Iterates the list of dni and creates a list of customers
+        //If a customer not exists throw a UserNotFoundException
         for (CustomerDTO customerDTO : accountDTO.getCustomers()) {
             if (customerRepository.findByDni(customerDTO.getDni()).isPresent()) {
                 customerList.add(customerRepository.findByDni(customerDTO.getDni()).get());
@@ -63,18 +64,14 @@ public class AccountService {
                     newAccount = new CheckingAccount();
                 }
             }
-
             case STUDENT_ACCOUNT -> newAccount = new StudentAccount();
-
-            case SAVINGS_ACCOUNT -> {
-                newAccount = new SavingsAccount();
-            }
-
+            case SAVINGS_ACCOUNT -> newAccount = new SavingsAccount();
             case CREDITCARD -> {
                 var newCreditCard = new CreditCard();
                 var credit = new BigDecimal(accountDTO.getCreditLimit());
                 // Returns:
-                //-1, 0, or 1 as this BigDecimal is numerically less than, equal to, or greater than val.
+                //-1, 0, or 1 as this BigDecimal is numerically less than, equal to,
+                // or greater than val.
                 if (credit.compareTo(newCreditCard.getDEFAULT_MAX_CREDIT()) < 0) {
                     if (credit.compareTo(newCreditCard.getDEFAULT_MIN_CREDIT()) > 0) {
                         newCreditCard.setCredit(new BigDecimal(accountDTO.getCreditLimit()));
@@ -84,10 +81,8 @@ public class AccountService {
                 } else {
                     newCreditCard.setCredit(newCreditCard.getDEFAULT_MAX_CREDIT());
                 }
-
                 return accountRepository.save(newCreditCard);
             }
-
             default -> throw new AccountTypeNotFoundException(accountType);
         }
         newAccount.addOwners(customerList);

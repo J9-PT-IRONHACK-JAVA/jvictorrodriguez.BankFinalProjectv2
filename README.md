@@ -8,11 +8,11 @@
 |--------------------|----------------|
 |                    | Customers      |
 |                    | AccountType    |
-| interestRate       | interesRate    |
+| :interestRate:     | interesRate    |
 |                    | creditLimit    |
-| minimumBalance     | minimumBalance |
+| minimumBalance:    | minimumBalance |
 |                    | id             |
-| status             | status         |
+| status:            | status         |
 | description        |                |
 | balance            |                |
 | creationDate       |                |
@@ -23,8 +23,18 @@
 
 #### Repository
 #### Service
-- findById(Long id)
+| MethodName | Parameters | Parameters |EndPoint     |
+|--------- ---|-----------|----------- |-------------------------------------------------|
+| findByAll:  | :Long id: |  :Long id: |http://localhost:8080/AdminAcces/Account/All --|
+| findById:   | Long id   | -----------|                                              |
 
+
+- findById(Long id)
+- findAll()
+  - create(AccountDTO accountDTO)
+        -CheckingAccount
+        -StudentAccount
+        -SavingsAcount   
 Model
 - Account
 - CheckingAccount
