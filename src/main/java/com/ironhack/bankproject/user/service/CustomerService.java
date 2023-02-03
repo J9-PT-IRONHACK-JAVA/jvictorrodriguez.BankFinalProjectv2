@@ -2,6 +2,7 @@ package com.ironhack.bankproject.user.service;
 
 import com.ironhack.bankproject.user.dto.AdminDTO;
 import com.ironhack.bankproject.user.dto.CustomerDTO;
+import com.ironhack.bankproject.user.exception.UserAlredyExistsException;
 import com.ironhack.bankproject.user.exception.UserNotFoundException;
 import com.ironhack.bankproject.user.model.Admin;
 import com.ironhack.bankproject.user.model.Customer;
@@ -24,11 +25,15 @@ public class CustomerService {
     }
 
     public CustomerDTO create(@RequestBody @Valid CustomerDTO customerDTO) {
+        var customerFound=customerRepository.findByDni(customerDTO.getDni());
+        if (customerFound.isPresent()){
+            throw new UserAlredyExistsException(customerDTO.getDni());
+        }
         var customerNew= customerRepository.save(Customer.fromDTO(customerDTO));
         return CustomerDTO.fromCustomer(customerNew);
     }
 
-    public CustomerDTO update(CustomerDTO customerDTO) {
+    public CustomerDTO update(@RequestBody @Valid CustomerDTO customerDTO) {
         //Looks for the user by username. if it doesn't exist throws an exception
         //else updates all 5 attributes
         var customerToUpdate= findByUsername(customerDTO.getUsername());

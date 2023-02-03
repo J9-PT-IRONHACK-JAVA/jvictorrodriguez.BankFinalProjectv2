@@ -64,6 +64,7 @@ public class TransactionService {
         cash.setAccountFrom(cash.getAccountFrom());
         cash.setAmount(cashDTO.getAmount());
         cash.setTransactionType(cashDTO.getTransactionType());
+        validationTransaction.checkAll(cashDTO);
         moveTheMoney(cashDTO);
         return transactionRepository.save(cash);
     }

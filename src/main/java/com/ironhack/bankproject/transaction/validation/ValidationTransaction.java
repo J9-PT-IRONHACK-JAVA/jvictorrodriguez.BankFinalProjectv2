@@ -1,10 +1,12 @@
 package com.ironhack.bankproject.transaction.validation;
 
+import com.ironhack.bankproject.Money;
 import com.ironhack.bankproject.account.enums.Status;
 import com.ironhack.bankproject.account.exceptions.*;
 import com.ironhack.bankproject.account.model.Account;
 import com.ironhack.bankproject.account.repository.AccountRepository;
 import com.ironhack.bankproject.security.JpaUserDetailsService;
+import com.ironhack.bankproject.transaction.dto.CashDTO;
 import com.ironhack.bankproject.transaction.dto.TransferDTO;
 import com.ironhack.bankproject.user.model.Customer;
 import lombok.Data;
@@ -39,7 +41,23 @@ public class ValidationTransaction {
 //todo         var userInfo=jpaUserDetailsService.loadUserByUsername();
        // System.out.println("UserInfo==========="+ userInfo);
         //checksPassword(transferDTO);
+    }
 
+//    public void checkAll(CashDTO cashDTO){
+//        checksAccountExist(cashDTO.getAccountFrom());
+//        checksAmount(cashDTO.getAmount().getAmount());
+//        checksCustomerAccount(cashDTO.getAccountFrom());
+//    }
+
+    public void checksAccountExist(Long id) {
+        //Checks if accounts exist and they are different
+        findAccountById(id);
+
+    }
+    public void checksAmount(BigDecimal amount) {
+        //Checks if the amount is positive
+        if (!(amount.compareTo(BigDecimal.ZERO) > 0))
+            throw new AmountNotPositiveException();
     }
 
 
@@ -52,6 +70,7 @@ public class ValidationTransaction {
         findAccountById(accountFromId);
         findAccountById(accountToId);
     }
+
 
     public void checksAmount(TransferDTO transferDTO) {
         //Checks if the amount is positive
