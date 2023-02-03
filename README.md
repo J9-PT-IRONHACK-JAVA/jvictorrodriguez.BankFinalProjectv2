@@ -4,20 +4,20 @@
 ### ACCOUNT
 
 #### Entities
-| :Model:          | :Dto:          |
-|------------------|----------------|
-|                  | Customers      |
-|                  | AccountType    |
-| interestRate     | interestRate   |
-|                  | creditLimit    |
-| minimumBalance   | minimumBalance |
-|                  | id             |
-| status           | status         |
-| description      |                |
-| balance          |                |
-| creationDate     |                |
-| monthlyMaintenance |                |
-| penaltieFee      |                |
+|       Model        |       Dto        |
+|:------------------:|:----------------:|
+|                    |    Customers     |
+|                    |   AccountType    |
+|    interestRate    |   interestRate   |
+|                    |   creditLimit    |
+|   minimumBalance   |  minimumBalance  |
+|                    |        id        |
+|       status       |      status      |
+|    description     |                  |
+|      balance       |                  |
+|    creationDate    |                  |
+| monthlyMaintenance |                  |
+|    penaltieFee     |                  |
 
 
 - Repository
@@ -37,13 +37,13 @@
 
 
 
-| JSON | :attributes: | @Valid                                                               |
-|------|--------------|----------------------------------------------------------------------|
-| #1   | username     | @NotEmpty                                                            |    |
-|      | password     | @Size(min = 6, max = 8, message = "Size between 6 and 8 characters") |
-|      | email        | @Email(message = "Email should be valid")                            |
-|      | name         | @NotEmpty(message = "Name cannot be empty")                          |
-|      | roles        | @NotEmpty(message = "e.g. ROLE_ADMIN")                               |
+| JSON | attributes | @Valid                                                               |
+|------|:----------:|----------------------------------------------------------------------|
+| #1   |  username  | @NotEmpty                                                            |    |
+|      |  password  | @Size(min = 6, max = 8, message = "Size between 6 and 8 characters") |
+|      |   email    | @Email(message = "Email should be valid")                            |
+|      |    name    | @NotEmpty(message = "Name cannot be empty")                          |
+|      |   roles    | @NotEmpty(message = "e.g. ROLE_ADMIN")                               |
 
 
 
