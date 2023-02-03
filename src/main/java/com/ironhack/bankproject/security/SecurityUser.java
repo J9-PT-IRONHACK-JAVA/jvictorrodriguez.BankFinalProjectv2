@@ -1,4 +1,4 @@
-package com.ironhack.bankproject.user.security;
+package com.ironhack.bankproject.security;
 
 
 import com.ironhack.bankproject.user.model.User;

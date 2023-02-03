@@ -1,4 +1,4 @@
-package com.ironhack.bankproject.user.security;
+package com.ironhack.bankproject.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
