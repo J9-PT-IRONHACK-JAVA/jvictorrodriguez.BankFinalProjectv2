@@ -1,6 +1,7 @@
 package com.ironhack.bankproject.transaction.service;
 
 import com.ironhack.bankproject.Money;
+import com.ironhack.bankproject.transaction.enums.TransactionType;
 import com.ironhack.bankproject.transaction.model.Cash;
 import com.ironhack.bankproject.transaction.model.Transfer;
 import com.ironhack.bankproject.transaction.dto.TransactionDTO;
@@ -49,15 +50,18 @@ public class TransactionService {
     }
     public Cash depositWithdraw(TransactionDTO transactionDTO) {
         //Obtains the applicable fee
-        Money applyFee = feeService.doIApplyFee(transactionDTO);
-        if (!(applyFee.getAmount().compareTo(BigDecimal.ZERO)==0)){
-            applyFees(transactionDTO,applyFee);
-        }
+
         var cash = new Cash();
         cash.setAccountFrom(cash.getAccountFrom());
         cash.setAmount(transactionDTO.getAmount());
         cash.setTransactionType(transactionDTO.getTransactionType());
         validationTransaction.checkForTransfer(transactionDTO);
+        if (transactionDTO.getTransactionType() == TransactionType.WITHDRAW) {
+            Money applyFee = feeService.doIApplyFee(transactionDTO);
+            if (!(applyFee.getAmount().compareTo(BigDecimal.ZERO)==0)){
+                applyFees(transactionDTO,applyFee);
+            }
+        }
         moveTheCash(transactionDTO);
         return transactionRepository.save(cash);
     }

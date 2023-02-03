@@ -4,7 +4,6 @@ import com.ironhack.bankproject.account.enums.Status;
 import com.ironhack.bankproject.account.exceptions.*;
 import com.ironhack.bankproject.account.model.Account;
 import com.ironhack.bankproject.account.repository.AccountRepository;
-import com.ironhack.bankproject.security.JpaUserDetailsService;
 import com.ironhack.bankproject.transaction.dto.TransactionDTO;
 import com.ironhack.bankproject.transaction.enums.TransactionType;
 import com.ironhack.bankproject.user.exception.UserNotFoundException;
@@ -59,9 +58,6 @@ public class ValidationTransaction {
         checksPositiveAmount(transactionDTO);
         checksCustomerAccount(transactionDTO);
         checksSenderAccountBalance(transactionDTO);
-
-
-        //checksPassword(transferDTO);
     }
 
     public void checkForCash(TransactionDTO transactionDTO) {

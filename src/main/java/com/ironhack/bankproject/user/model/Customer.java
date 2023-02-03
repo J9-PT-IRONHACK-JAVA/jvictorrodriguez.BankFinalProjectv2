@@ -10,12 +10,16 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-
 public class Customer extends User{
+
+
     @Size(min = 6,max=9,message = "Dni should have between 6 and 9 characters")
     @Column (unique = true)
     private String dni;
@@ -28,6 +32,8 @@ public class Customer extends User{
 
     @Embedded
     private Address address;
+
+
     public Customer() {
         this.setRoles("ROLE_USER");
     }
@@ -46,7 +52,7 @@ public class Customer extends User{
     public static Customer fromDTO(CustomerDTO customerDTO){
         var customer= new Customer();
         customer.setUsername(customerDTO.getUsername());
-        customer.setPassword(customerDTO.getPassword());
+
         customer.setEmail(customerDTO.getEmail());
         customer.setName(customerDTO.getName());
         customer.setId(customerDTO.getId());

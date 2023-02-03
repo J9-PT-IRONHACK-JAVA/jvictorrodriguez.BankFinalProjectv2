@@ -6,6 +6,7 @@ import com.ironhack.bankproject.user.exception.UserNotFoundException;
 import com.ironhack.bankproject.user.model.ThirdParty;
 import com.ironhack.bankproject.user.repository.ThirdPartyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ThirdPartyService {
     private final ThirdPartyRepository thirdPartyRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<ThirdParty> findAll() {
         return thirdPartyRepository.findAll();
@@ -31,7 +33,7 @@ public class ThirdPartyService {
         //Looks for the user by username. if it doesn't exist throws an exception
         //else updates all 5 attributes
         var thirdPartyToUpdate = findByUserName(thirdPartyDTO.getUsername());
-        thirdPartyToUpdate.setPassword(thirdPartyDTO.getPassword());
+        thirdPartyToUpdate.setPassword(passwordEncoder.encode(thirdPartyDTO.getPassword()));
         thirdPartyToUpdate.setName(thirdPartyDTO.getName());
         thirdPartyToUpdate.setHashedKey(thirdPartyDTO.getHashedKey());
         thirdPartyRepository.save(thirdPartyToUpdate);

@@ -6,21 +6,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.security.web.SecurityFilterChain;
+
 
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JpaUserDetailsService jpaUserDetailsService;
+    private final UserdetailsService userdetailsService;
 
-    @Bean
-    PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+
 
 
     @Bean
@@ -33,11 +30,11 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/AdminAccess/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/AdminAccess/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/AdminAccess/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/Transaction/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/Transaction/**").hasRole("USER")
                 .anyRequest()
                 .authenticated()
                 .and()
-                .userDetailsService(jpaUserDetailsService)
+                .userDetailsService(userdetailsService)
                 .httpBasic()
                 .and()
                 .build();
