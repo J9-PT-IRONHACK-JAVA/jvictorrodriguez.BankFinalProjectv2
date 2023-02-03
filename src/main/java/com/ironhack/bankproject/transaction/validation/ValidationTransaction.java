@@ -4,11 +4,14 @@ import com.ironhack.bankproject.account.enums.Status;
 import com.ironhack.bankproject.account.exceptions.*;
 import com.ironhack.bankproject.account.model.Account;
 import com.ironhack.bankproject.account.repository.AccountRepository;
+import com.ironhack.bankproject.security.JpaUserDetailsService;
 import com.ironhack.bankproject.transaction.dto.TransferDTO;
 import com.ironhack.bankproject.user.model.Customer;
 import lombok.Data;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,6 +23,9 @@ import java.util.Objects;
 public class ValidationTransaction {
 
     private final AccountRepository accountRepository;
+    private final JpaUserDetailsService jpaUserDetailsService;
+
+
 
     public Account findAccountById(Long id) {
         return accountRepository.findById(id).orElseThrow(() -> new AccountIdNotFoundException(id));
@@ -30,6 +36,8 @@ public class ValidationTransaction {
         checksAmount(transferDTO);
         checksCustomerAccount(transferDTO);
         checksSenderAccountBalance(transferDTO);
+//todo         var userInfo=jpaUserDetailsService.loadUserByUsername();
+       // System.out.println("UserInfo==========="+ userInfo);
         //checksPassword(transferDTO);
 
     }

@@ -1,6 +1,8 @@
 package com.ironhack.bankproject.transaction.service;
 
 import com.ironhack.bankproject.Money;
+import com.ironhack.bankproject.transaction.dto.CashDTO;
+import com.ironhack.bankproject.transaction.model.Cash;
 import com.ironhack.bankproject.transaction.model.Transfer;
 import com.ironhack.bankproject.transaction.dto.TransferDTO;
 import com.ironhack.bankproject.transaction.repository.TransactionRepository;
@@ -35,6 +37,9 @@ public class TransactionService {
         return transactionRepository.save(newTransfer);
     }
 
+
+
+
     @Transactional
     public void moveTheMoney(TransferDTO transferDTO) {
        var accountSender=validationTransaction.findAccountById(transferDTO.getAccountFrom());
@@ -43,8 +48,23 @@ public class TransactionService {
        accountTarget.setBalance(new Money(accountTarget.getBalance().increaseAmount(transferDTO.getAmount())));
     }
 
+    @Transactional
+    public void moveTheMoney(CashDTO cashDTO) {
+        var accountSender=validationTransaction.findAccountById(cashDTO.getAccountFrom());
+        accountSender.setBalance(new Money(accountSender.getBalance().decreaseAmount(cashDTO.getAmount())));
+    }
     public String getSendersName(String id) {
         var sender = customerRepository.findByDni(id).orElseThrow();
         return sender.getName();
+    }
+
+    public Cash depositWithdraw(CashDTO cashDTO) {
+
+        var cash= new Cash();
+        cash.setAccountFrom(cash.getAccountFrom());
+        cash.setAmount(cashDTO.getAmount());
+        cash.setTransactionType(cashDTO.getTransactionType());
+        moveTheMoney(cashDTO);
+        return transactionRepository.save(cash);
     }
 }
