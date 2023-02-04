@@ -41,7 +41,7 @@ Wrapped with Exceptions and ExceptionHandlers, validations,  and of course secur
 - Transfer
 - Deposit
 - Withdraw
-- 
+
   *Require*
 - Fraud
 - Validation

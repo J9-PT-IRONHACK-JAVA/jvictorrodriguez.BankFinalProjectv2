@@ -26,6 +26,7 @@ public class TransactionDTO {
     private String TargetName;
     private String observations;
 
+
     private String senderId;
 
 

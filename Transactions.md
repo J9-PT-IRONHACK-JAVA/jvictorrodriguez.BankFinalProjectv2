@@ -12,13 +12,14 @@
 - Validation
 
 
-
-- BothAccountAreEqualsException 
-- AmountNotPositiveException
-- AccountNotBelongsToSenderException
-- AccountNotActiveException
-- InsufficientBalanceException
-- UserNotFoundException
+- Required ROLE ADMIN or ROLE USER to access the Endpoints.
+- Handle errors
+  - BothAccountAreEqualsException 
+  - AmountNotPositiveException
+  - AccountNotBelongsToSenderException
+  - AccountNotActiveException
+  - InsufficientBalanceException
+  - UserNotFoundException
 
 | MethodName | Parameters |  verb  | Admin                                      | JSON |
 |-----------:|:----------:|:------:|:-------------------------------------------|:----:|

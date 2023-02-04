@@ -24,7 +24,7 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final CustomerRepository customerRepository;
-    private final ValidationTransaction validationTransaction;
+    private final ValidationTransaction     validationTransaction;
     private final FeeService feeService;
 
 
@@ -33,8 +33,8 @@ public class TransactionService {
         validationTransaction.checkForTransfer(transactionDTO);
         //Obtains the applicable fee
         Money applyFee = feeService.doIApplyFee(transactionDTO);
-        if (!(applyFee.getAmount().compareTo(BigDecimal.ZERO)==0)){
-            applyFees(transactionDTO,applyFee);
+        if (!(applyFee.getAmount().compareTo(BigDecimal.ZERO) == 0)) {
+            applyFees(transactionDTO, applyFee);
         }
         //Creates the Transfer
         var newTransfer = new Transfer();
@@ -48,6 +48,7 @@ public class TransactionService {
         moveTheMoney(transactionDTO);
         return transactionRepository.save(newTransfer);
     }
+
     public Cash depositWithdraw(TransactionDTO transactionDTO) {
         //Obtains the applicable fee
 
@@ -55,17 +56,16 @@ public class TransactionService {
         cash.setAccountFrom(cash.getAccountFrom());
         cash.setAmount(transactionDTO.getAmount());
         cash.setTransactionType(transactionDTO.getTransactionType());
-        validationTransaction.checkForTransfer(transactionDTO);
+        validationTransaction.checkForCash(transactionDTO);
         if (transactionDTO.getTransactionType() == TransactionType.WITHDRAW) {
             Money applyFee = feeService.doIApplyFee(transactionDTO);
-            if (!(applyFee.getAmount().compareTo(BigDecimal.ZERO)==0)){
-                applyFees(transactionDTO,applyFee);
+            if (!(applyFee.getAmount().compareTo(BigDecimal.ZERO) == 0)) {
+                applyFees(transactionDTO, applyFee);
             }
         }
         moveTheCash(transactionDTO);
         return transactionRepository.save(cash);
     }
-
 
 
     @Transactional
@@ -78,10 +78,13 @@ public class TransactionService {
 
     public void moveTheCash(TransactionDTO transactionDTO) {
         var accountSender = validationTransaction.findAccountById(transactionDTO.getAccountFrom());
-        accountSender.setBalance(new Money(accountSender.getBalance().decreaseAmount(transactionDTO.getAmount())));
+        if (transactionDTO.getTransactionType() == TransactionType.WITHDRAW)
+            accountSender.setBalance(new Money(accountSender.getBalance().decreaseAmount(transactionDTO.getAmount())));
+        if (transactionDTO.getTransactionType() == TransactionType.DEPOSIT)
+            accountSender.setBalance(new Money(accountSender.getBalance().increaseAmount(transactionDTO.getAmount())));
     }
 
-    public void applyFees(TransactionDTO transactionDTO,Money fees) {
+    public void applyFees(TransactionDTO transactionDTO, Money fees) {
         var accountSender = validationTransaction.findAccountById(transactionDTO.getAccountFrom());
         accountSender.setBalance(new Money(accountSender.getBalance().decreaseAmount(fees)));
     }

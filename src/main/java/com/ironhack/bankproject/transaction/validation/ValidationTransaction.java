@@ -53,7 +53,7 @@ public class ValidationTransaction {
     }
 
     public void checkForTransfer(TransactionDTO transactionDTO) {
-        checkLoggedUser(transactionDTO);
+       //todo  checkLoggedUser(transactionDTO);
         checksAccountExist(transactionDTO);
         checksPositiveAmount(transactionDTO);
         checksCustomerAccount(transactionDTO);
@@ -61,7 +61,7 @@ public class ValidationTransaction {
     }
 
     public void checkForCash(TransactionDTO transactionDTO) {
-        checkLoggedUser(transactionDTO);
+      //todo  checkLoggedUser(transactionDTO);
         checksAccountExist(transactionDTO.getAccountFrom());
         checksPositiveAmount(transactionDTO);
         checksCustomerAccount(transactionDTO);
@@ -95,16 +95,16 @@ public class ValidationTransaction {
         //Check senders account
         var senderAccount = accountRepository.findById(transactionDTO.getAccountFrom()).orElseThrow();
 
-        //Check if the account belongs to the accountHolder
-        var ownerList = senderAccount.getOwners();
-        boolean accountBelongsToSender = false;
-        for (Customer customer : ownerList) {
-            if (customer.getDni().equalsIgnoreCase((transactionDTO.getSenderId()))) {
-                accountBelongsToSender = true;
-                break;
-            }
-        }
-        if (!accountBelongsToSender) throw new AccountNotBelongsToSenderException();
+//        //Check if the account belongs to the accountHolder
+//        var ownerList = senderAccount.getOwners();
+//        boolean accountBelongsToSender = false;
+//        for (Customer customer : ownerList) {
+//            if (customer.getDni().equalsIgnoreCase((transactionDTO.getSenderId()))) {
+//                accountBelongsToSender = true;
+//                break;
+//            }
+//        }
+//        if (!accountBelongsToSender) throw new AccountNotBelongsToSenderException();
 
         //Checks if the account is Active
         var statusSenderAccount = senderAccount.getStatus();
