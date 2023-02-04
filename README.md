@@ -31,10 +31,9 @@ Wrapped with Exceptions and ExceptionHandlers, validations,  and of course secur
 - Credit Card
 - Savings Account
 <br>
-  :rocket: 
-- **we have improved the design including the possibility of an unlimited client list**
+  :rocket: **we have improved the design including the possibility of an unlimited client list**
 
-:sparkling_heart:
+
 ### DTOs looks interesting
 
 
