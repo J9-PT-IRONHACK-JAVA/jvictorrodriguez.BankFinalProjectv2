@@ -8,6 +8,7 @@
 - Savings Account
 
 
+:rocket: **- we have improved the design including the possibility of an unlimited client list**
 
 - Required ROLE ADMIN to access the Endpoints.
 - Handle errors

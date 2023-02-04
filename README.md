@@ -2,9 +2,19 @@
 
 
 Iron Banking System is my bootcamp final project.
-It has been made with part of what has been learned during these 16 weeks and I have also learned a lot doing it. 
-We have learned design form layers. Starting with the model,repository,service,controller,...
+It has been made with part of what has been learned during these 16 weeks and I have also learned a lot doing it.
+We have learned OOP programming, inheritance,...
+
+#### We have learned design form layers. Starting with ...
+- model
+- repository
+- service
+- controller
+- testing
+- ...
 Wrapped with Exceptions and ExceptionHandlers, validations,  and of course security.
+
+
 
 ### Let's start
 #### There are 3 kind of users: [- know more](User.md)
@@ -20,26 +30,14 @@ Wrapped with Exceptions and ExceptionHandlers, validations,  and of course secur
 - Student Account
 - Credit Card
 - Savings Account
-
+<br>
   :rocket: **- we have improved the design including the possibility of an unlimited client list**
- 
-**Attributes**
 
-Balance
-
-SecretKey
-
-Set of Owners.
+:love: 
+### DTOs looks interesting
 
 
-MinimumBalance
-PenaltyFee
-MonthlyMaintenanceFee
-CreationDate
-Status (FROZEN, ACTIVE)
-
-
-### Structure
+#### Customer model and DTO example
 |       Model        |       Dto        |
 |:------------------:|:----------------:|
 |                    |    Customers     |
@@ -56,9 +54,6 @@ Status (FROZEN, ACTIVE)
 |     penaltyFee     |                  |
 
 
-- Repository
-- Service
-- Controller
-- 
+
 
 
