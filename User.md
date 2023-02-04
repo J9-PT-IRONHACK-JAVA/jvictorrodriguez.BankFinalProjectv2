@@ -48,7 +48,9 @@
 
 ![Create an Admin Output](/images/CreateANewAdminUserOutput.png)
 
-#### INPUT **delete an AdminUser**
+
+#### Delete an Admin user
+##### input
 
 ![Delete an Admin Ueer](/images/AdminUserDelete.png)
 
@@ -149,9 +151,11 @@
 ##### input
 {"username": "12345678i"}
 
-#### output
+##### output
  
-Pending, also We think we don't should delete a customer 
+Pending...
+, also We think we don't should delete a customer
+
 java.sql.SQLIntegrityConstraintViolationException: Cannot delete or update a parent row: a foreign key constraint fails (`j9_bank_final_project`.`accounts_customers`, CONSTRAINT `FK1yep6p303cimtupr59e9swnfc` FOREIGN KEY (`customer_id`) REFERENCES `users` (`id`))
 {
 "timestamp": "2023-02-04T10:14:49.481+00:00",
