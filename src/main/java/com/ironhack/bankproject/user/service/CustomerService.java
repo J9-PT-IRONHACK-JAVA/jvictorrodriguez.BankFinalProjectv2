@@ -28,57 +28,63 @@ public class CustomerService {
     }
 
     public CustomerDTO create(@RequestBody @Valid CustomerDTO customerDTO) {
-        var customerFound= getByDni(customerDTO);
-        if (customerFound.isPresent()){
+        var customerFound = getByDni(customerDTO);
+        if (customerFound.isPresent()) {
 
             throw new UserAlredyExistsException(customerDTO.getDni());
         }
-        var customerNew= Customer.fromDTO(customerDTO);
+        var customerNew = Customer.fromDTO(customerDTO);
         customerNew.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
         customerRepository.save(customerNew);
         return CustomerDTO.fromCustomer(customerNew);
     }
 
 
-
     public CustomerDTO update(@RequestBody @Valid CustomerDTO customerDTO) {
         //Looks for the user by username. if it doesn't exist throws an exception
         //else updates all 5 attributes
-        var customerToUpdate= findByUsername(customerDTO.getUsername());
+        var customerToUpdate = findByUsername(customerDTO.getUsername());
         customerToUpdate.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
         customerToUpdate.setName(customerDTO.getName());
         customerToUpdate.setEmail(customerDTO.getEmail());
         customerToUpdate.setDni(customerDTO.getDni());
-        customerToUpdate=customerRepository.save(customerToUpdate);
+        customerToUpdate = customerRepository.save(customerToUpdate);
         return CustomerDTO.fromCustomer(customerToUpdate);
     }
 
 
-
     public CustomerDTO updatePatchMethod(CustomerDTO customerDTO) {
-        var customerToUpdate =findByUsername(customerDTO.getUsername());
-        if(!customerDTO.getRoles().isEmpty()){
-            customerToUpdate.setRoles(customerDTO.getRoles());
-        }
-        if (!customerDTO.getEmail().isEmpty()){
+        var customerToUpdate = findByUsername(customerDTO.getUsername());
+
+
+
+        if (customerDTO.getEmail()!=null) {
             customerToUpdate.setEmail(customerDTO.getEmail());
         }
-        if(!customerDTO.getName().isEmpty()){
+        if (customerDTO.getName()!=null) {
             customerToUpdate.setName(customerDTO.getName());
         }
-        if(!customerDTO.getPassword().isEmpty()){
-            customerToUpdate.setPassword(passwordEncoder.encode(customerDTO.getPassword()));}
-            customerRepository.save(customerToUpdate);
+        if (customerDTO.getPassword()!=null) {
+            customerToUpdate.setPassword(passwordEncoder.encode(customerDTO.getPassword()));
+        }
+        if (customerDTO.getDOB()!=null) {
+            customerToUpdate.setDOB(customerDTO.getDOB());
+        }
+
+        customerRepository.save(customerToUpdate);
         return CustomerDTO.fromCustomer(customerToUpdate);
     }
 
     public void delete(CustomerDTO customerDTO) {
-        customerRepository.deleteById(customerDTO.getId());
+        var customerToDelete = findByUsername(customerDTO.getUsername());
+
+        customerRepository.deleteById(customerToDelete.getId());
     }
 
-    private Customer findByUsername(String username){
-        return customerRepository.findByUsername(username).orElseThrow(()-> new UserNotFoundException(username));
+    private Customer findByUsername(String username) {
+        return customerRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
     }
+
     private Optional<Customer> getByDni(CustomerDTO customerDTO) {
         return customerRepository.findByDni(customerDTO.getDni());
     }

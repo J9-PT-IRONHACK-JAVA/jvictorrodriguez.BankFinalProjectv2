@@ -68,6 +68,7 @@ public class AdminService {
 
 
     public void delete(AdminDTO adminDTO) {
+
               adminRepository.deleteById(adminDTO.getId());
     }
 
