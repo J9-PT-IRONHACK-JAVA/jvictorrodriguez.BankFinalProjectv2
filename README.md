@@ -3,7 +3,7 @@
 ## Quick Start
 ### ACCOUNT
 
-#### Entities
+#### Structure
 |       Model        |       Dto        |
 |:------------------:|:----------------:|
 |                    |    Customers     |
@@ -17,7 +17,7 @@
 |      balance       |                  |
 |    creationDate    |                  |
 | monthlyMaintenance |                  |
-|    penaltieFee     |                  |
+|     penaltyFee     |                  |
 
 
 - Repository
@@ -35,6 +35,8 @@
 |   findById |   Long id   | GET  |                                                   |   |
 |   findById |   Long id   | GET  |                                                   |   |
 
+##OUTPUT
+![AdminFindAll](/images/AdminFindAll.png)
 
 
 | JSON | attributes | @Valid                                                               |
@@ -44,19 +46,15 @@
 |      |   email    | @Email(message = "Email should be valid")                            |
 |      |    name    | @NotEmpty(message = "Name cannot be empty")                          |
 |      |   roles    | @NotEmpty(message = "e.g. ROLE_ADMIN")                               |
-
-
-
-
-{ 
-
-"username": "u100100",
+<br>
+{
+    "username": "u100102",
     "password": "password",
-    "email": "admin1@correo.es",
-    "name": "Federico Martín",
+    "email": "admin2@correo.es",
+    "name": "Matías Ferández",
     "roles": "ROLE_ADMIN"
+}
 
-}  
 
 | JSON | :attributes: | @Valid                                                              |
 |------|--------------|---------------------------------------------------------------------|

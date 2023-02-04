@@ -23,8 +23,18 @@ public class AdminService {
     }
 
     public AdminDTO create(AdminDTO adminDTO){
+        var adminFound = checkIfExistsByUsername(adminDTO.getUsername());
+        if(adminFound.isPresent()){
+            throw new UserAlredyExistsException(adminDTO.getUsername());
+        }
         var adminNew= adminRepository.save(Admin.fromDTO(adminDTO));
+        adminNew.setPassword(passwordEncoder.encode(adminDTO.getPassword()));
+        adminRepository.save(adminNew);
         return AdminDTO.fromAdmin(adminNew);
+    }
+
+    private Optional<Admin> checkIfExistsByUsername(String username) {
+        return adminRepository.findByUsername(username);
     }
 
     public AdminDTO update(AdminDTO adminDTO) {
