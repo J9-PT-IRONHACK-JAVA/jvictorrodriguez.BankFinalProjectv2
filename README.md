@@ -14,6 +14,7 @@ We have learned OOP programming, inheritance,...
 - ...
 Wrapped with Exceptions and ExceptionHandlers, validations,  and of course security.
 
+![Tree](/images/tree.png)
 
 
 ### Let's start
@@ -34,8 +35,19 @@ Wrapped with Exceptions and ExceptionHandlers, validations,  and of course secur
   :rocket: **we have improved the design including the possibility of an unlimited client list**
 
 
-### DTOs looks interesting
 
+#### Available Transactions [- know more](Transactions.md)
+
+- Transfer
+- Deposit
+- Withdraw
+- 
+  *Require*
+- Fraud
+- Validation
+
+
+### DTOs looks interesting
 
 #### Customer model and DTO example
 |       Model        |       Dto        |
